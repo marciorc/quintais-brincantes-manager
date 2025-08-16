@@ -24,7 +24,7 @@ Website e Sistema para gestão de Quintais Brincantes.
 ## 📁 Estrutura do Projeto
 
 ```
-pedeamoramarilia/
+quitais-brincantes-manager/
 ├── apps/
 │   ├── api/                      # Backend API
 │   │   ├── controllers/          # Controladores
@@ -49,7 +49,7 @@ pedeamoramarilia/
 ## 🛠️ Instalação e Configuração
 
 ### Pré-requisitos
-- Node.js (versão 16 ou superior)
+- Node.js (versão 20)
 - PostgreSQL
 - npm ou yarn
 
