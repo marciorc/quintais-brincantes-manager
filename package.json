@@ -1,0 +1,30 @@
+{
+  "name": "quintais-brincantes-manager",
+  "version": "1.0.0",
+  "description": "Aplicação Web e de gerenciamento de Quintais Brincantes",
+  "scripts": {
+    "dev:api": "nodemon apps/api/index.js",
+    "dev:web": "cd apps/web && npm run dev",
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:web\"",
+    "prisma:migrate": "prisma migrate dev --schema=prisma/schema.prisma",
+    "prisma:generate": "prisma generate",
+    "prisma:seed": "node prisma/seed-superuser.js",
+    "start": "node apps/api/index.js"
+  },
+  "dependencies": {
+    "@adminjs/express": "^5.1.0",
+    "@adminjs/prisma": "^5.0.4",
+    "@prisma/client": "^6.13.0",
+    "adminjs": "^7.8.17",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.0",
+    "nodemon": "^3.1.10",
+    "prisma": "^6.13.0"
+  }
+}

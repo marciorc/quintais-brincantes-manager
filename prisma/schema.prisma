@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Responsavel {
+  id         String     @id @default(uuid())
+  nome       String
+  email      String     @unique
+  contato    String
+  senhaHash  String
+  criancas   Crianca[] // 1:N
+  criadoEm   DateTime   @default(now())
+}
+
+model Crianca {
+  id             String   @id @default(uuid())
+  nome           String
+  dataNascimento DateTime
+  turmaId        String?
+  turma          Turma?   @relation(fields: [turmaId], references: [id])
+  responsavelId  String
+  responsavel    Responsavel @relation(fields: [responsavelId], references: [id])
+}
+
+model Turma {
+  id         String     @id @default(uuid())
+  nome       String
+  criancas   Crianca[]
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  usuario   String   @unique
+  senhaHash String
+  nome      String
+  criadoEm  DateTime @default(now())
+}
