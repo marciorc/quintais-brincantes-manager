@@ -10,10 +10,32 @@ AdminJS.registerAdapter({
 })
 
 const adminJs = new AdminJS({
-//   resources: [{
-//       resource: { model: prisma.crianca, client: prisma }
-//     }
-//   ],
+  resources: [
+    {
+      resource: {
+        model: AdminJSPrisma.getModelByName('Admin'), 
+        client: prisma 
+      }
+    },
+    {
+      resource: {
+        model: AdminJSPrisma.getModelByName('Crianca'), 
+        client: prisma 
+      }
+    },
+    {
+      resource: {
+        model: AdminJSPrisma.getModelByName('Responsavel'), 
+        client: prisma 
+      }
+    },
+    {
+      resource: {
+        model: AdminJSPrisma.getModelByName('Turma'), 
+        client: prisma 
+      }
+    }
+  ],
   rootPath: '/admin',
   branding: {
     companyName: 'Quintais Brincantes Manager',
