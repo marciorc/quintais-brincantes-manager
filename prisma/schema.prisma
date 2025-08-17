@@ -20,7 +20,7 @@ model Responsavel {
 model Crianca {
   id             Int         @id @default(autoincrement())
   nome           String
-  dataNascimento DateTime    @db.Date
+  dataNascimento String      @db.VarChar(10)
   turmaId        Int?
   turma          Turma?      @relation(fields: [turmaId], references: [id])
   responsavelId  Int

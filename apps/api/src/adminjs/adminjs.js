@@ -9,6 +9,7 @@ const prisma = new PrismaClient()
 
 const DatePicker = require('./components/DatePicker')
 const DateDisplay = require('./components/DateDisplay')
+const DateInputMask = require('./components/DateInputMask');
 
 AdminJS.registerAdapter({
   Resource: AdminJSPrisma.Resource,
@@ -30,11 +31,12 @@ const adminJs = new AdminJS({
           dataNascimento: {
             type: 'string',
             components: {
-              edit: DatePicker,
+              edit: DateInputMask,
               show: DateDisplay
             },
             props: {
-              picker: 'date',
+              pattern: "\\d{2}/\\d{2}/\\d{4}",
+              title: "Digite a data no formato DD/MM/AAAA",
               format: 'DD/MM/YYYY',
               showTime: false
             }
