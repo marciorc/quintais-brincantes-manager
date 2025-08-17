@@ -55,8 +55,8 @@ quitais-brincantes-manager/
 
 ### 1. Clone o repositório
 ```bash
-git clone <url-do-repositorio>
-cd pedeamoramarilia
+git clone git@github.com:marciorc/quintais-brincantes-manager.git
+cd quintais-brincantes-manager
 ```
 
 ### 2. Instale as dependências

@@ -1,0 +1,96 @@
+/* Cores oficiais */
+:root {
+  --quintais-primary: #6a4c93;
+  --quintais-secondary: #f8f5ff;
+  --quintais-accent: #e6d7ff;
+}
+
+.quintais-login-container {
+  background: linear-gradient(135deg, var(--quintais-secondary) 0%, #ffffff 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.quintais-login-box {
+  background: white;
+  width: 100%;
+  max-width: 450px;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+.quintais-logo {
+  height: 60px;
+  margin-bottom: 30px;
+}
+
+.quintais-welcome {
+  color: var(--quintais-primary);
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.quintais-subtitle {
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 1rem;
+}
+
+.quintais-form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.quintais-label {
+  display: block;
+  color: var(--quintais-primary);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.quintais-input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid var(--quintais-accent);
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.quintais-input:focus {
+  border-color: var(--quintais-primary);
+  outline: none;
+}
+
+.quintais-button {
+  background: var(--quintais-primary);
+  color: white;
+  border: none;
+  width: 100%;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 10px;
+}
+
+.quintais-button:hover {
+  background: #7d5fa6;
+  transform: translateY(-2px);
+}
+
+.quintais-error {
+  background: #ffebee;
+  color: #d33f49;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}

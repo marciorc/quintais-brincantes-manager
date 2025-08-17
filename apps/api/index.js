@@ -6,12 +6,16 @@ const bcrypt = require('bcryptjs');
 const { adminJs, router: adminRouter } = require('./src/adminjs/adminjs')
 const { PrismaClient } = require('@prisma/client');
 const responsavelRoutes = require('./routes/responsavel');
-
-dotenv.config();
+const path = require('path')
 const prisma = new PrismaClient();
 const app = express();
+dotenv.config();
+
 app.use(cors());
+app.use(express.static('public'));
 app.use(express.json());
+
+app.use('/adminjs-components', express.static(path.join(__dirname, 'src/adminjs/components')));
 
 // Autenticação de responsável
 app.post('/auth/login', async (req, res) => {

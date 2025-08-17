@@ -8,33 +8,34 @@ datasource db {
 }
 
 model Responsavel {
-  id         String     @id @default(uuid())
+  id         Int        @id @default(autoincrement())
   nome       String
   email      String     @unique
   contato    String
   senhaHash  String
-  criancas   Crianca[] // 1:N
+  criancas   Crianca[]
   criadoEm   DateTime   @default(now())
 }
 
 model Crianca {
-  id             String   @id @default(uuid())
+  id             Int         @id @default(autoincrement())
   nome           String
-  dataNascimento DateTime
-  turmaId        String?
-  turma          Turma?   @relation(fields: [turmaId], references: [id])
-  responsavelId  String
+  dataNascimento DateTime    @db.Date
+  turmaId        Int?
+  turma          Turma?      @relation(fields: [turmaId], references: [id])
+  responsavelId  Int
   responsavel    Responsavel @relation(fields: [responsavelId], references: [id])
+  criadoEm       DateTime    @default(now())
 }
 
 model Turma {
-  id         String     @id @default(uuid())
+  id         Int      @id @default(autoincrement())
   nome       String
   criancas   Crianca[]
 }
 
 model Admin {
-  id        String   @id @default(uuid())
+  id        Int      @id @default(autoincrement())
   usuario   String   @unique
   senhaHash String
   nome      String
