@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { adminJs, router: adminRouter } = require('./src/adminjs/adminjs')
 const { PrismaClient } = require('@prisma/client');
-const responsavelRoutes = require('./routes/responsavel');
 const path = require('path')
 const prisma = new PrismaClient();
 const app = express();
@@ -34,9 +33,9 @@ app.get('/', (req, res) => {
   res.send('API do Quintais Brincantes Manager rodando 🚀');
 });
 
-app.use('/api', responsavelRoutes);
-
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`API ouvindo na porta ${PORT}`);
 });
+
+module.exports = app;
