@@ -9,7 +9,9 @@
     "prisma:migrate": "prisma migrate dev --schema=prisma/schema.prisma",
     "prisma:generate": "prisma generate",
     "prisma:seed": "node prisma/seed-superuser.js",
-    "start": "node apps/api/index.js"
+    "start": "node apps/api/index.js",
+    "test": "mocha --recursive --exit --timeout 10000 apps/api/test/",
+    "test:watch": "mocha --recursive --exit --timeout 10000 --watch apps/api/test/"
   },
   "dependencies": {
     "@adminjs/express": "^5.1.0",
