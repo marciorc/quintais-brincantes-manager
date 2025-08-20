@@ -23,3 +23,17 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+
+// Comando para navegar para recurso e criar novo
+Cypress.Commands.add('navigateToCreate', (resourceName) => {
+  cy.get(`a[href="/admin/resources/${resourceName}"]`).click();
+  cy.get(`a[href="/admin/resources/${resourceName}/actions/new"]`).contains('Create new').click();
+});
+
+// Comando para salvar formulário e verificar sucesso
+Cypress.Commands.add('saveForm', () => {
+  cy.intercept('POST', '/admin/api/resources/**/actions/new').as('saveRequest');
+  cy.get('[data-testid="button-save"]').contains('Save').click();
+  cy.wait('@saveRequest').its('response.statusCode').should('eq', 200);
+});

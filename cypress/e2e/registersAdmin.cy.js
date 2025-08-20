@@ -11,30 +11,37 @@ describe('Registers Admin', () => {
 
   it('should be able to register a new Turma', () => {
     cy.get('.icon-box').click()
-    cy.get('a[href="/admin/resources/Turma"]').click()
-    cy.get('a[href="/admin/resources/Turma/actions/new"]').contains('Create new').click()
+    cy.navigateToCreate('Turma')
     cy.get('#nome').click().type('Turma de Teste')
-    cy.get('[data-testid="button-save"]').click()
+    cy.saveForm()
   })
 
   it('should be able to register a new Responsavel', () => {
     cy.get('.icon-box').click()
-    cy.get('a[href="/admin/resources/Responsavel"]').click()
-    cy.get('a[href="/admin/resources/Responsavel/actions/new"]').contains('Create new').click()
+    cy.navigateToCreate('Responsavel')
     cy.get('#email').click().type('email@teste.com')
     cy.get('#nome').click().type('Responsavel de Teste')
     cy.get('#contato').click().type('123456789')
     cy.get('#senhaHash').click().type('senha123')
-    cy.get('[data-testid="button-save"]').click()
+    cy.saveForm()
+  })
+
+  it('should be able to register a new Crianca', () => {
+    cy.get('.icon-box').click()
+    cy.navigateToCreate('Crianca')
+    cy.get('#nome').click().type('Crianca de Teste')
+    cy.get('#dataNascimento').click().type('01/01/2020')
+    cy.get('[data-testid="property-edit-turma"] .adminjs_Select').click().type('1')
+    cy.get('[data-testid="property-edit-responsavel"] .adminjs_Select').click().type('1')
+    cy.saveForm()
   })
 
   it('should be able to register a new admin', () => {
     cy.get('.icon-box').click()
-    cy.get('a[href="/admin/resources/Admin"]').click()
-    cy.get('a[href="/admin/resources/Admin/actions/new"]').contains('Create new').click()
+    cy.navigateToCreate('Admin')
     cy.get('#usuario').click().type('User Test')
     cy.get('#senhaHash').click().type('senha123')
     cy.get('#nome').click().type('User Test')
-    cy.get('[data-testid="button-save"]').click()
+    cy.saveForm()
   })
 })
