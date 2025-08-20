@@ -13,5 +13,7 @@ module.exports = defineConfig({
       };
       return config;
     },
+    viewportWidth: 1920,  // Largura máxima
+    viewportHeight: 1080, // Altura máxima
   },
 });
