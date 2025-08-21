@@ -1,47 +1,68 @@
 describe('Registers Admin', () => {
-  const password = Cypress.env('SUPERUSER_PASSWORD');
-
   beforeEach(() => {
-    cy.visit('/admin/login')
-    cy.get('[name="email"]').click().type('superuser')
-    cy.get('[name="password"]').click().type(`${password}`)
-    cy.get('.adminjs_Button').contains('Login').click()
-    cy.get('.adminjs_Header.adminjs_H2').contains('Welcome on Board')
+    // Usar cy.session() para login - será cacheado automaticamente
+    cy.loginAdmin()
+    
+    // Navegar para dashboard após login
+    cy.visit('/admin')
+    cy.get('.icon-box', { timeout: 10000 }).click()
   })
 
   it('should be able to register a new Turma', () => {
-    cy.get('.icon-box').click()
-    cy.navigateToCreate('Turma')
-    cy.get('#nome').click().type('Turma de Teste')
-    cy.saveForm()
+    cy.get('a[href="/admin/resources/Turma"]').click()
+    cy.get('a[href="/admin/resources/Turma/actions/new"]').contains('Create new').click()
+    cy.get('#nome').type('Turma de Teste')
+    
+    cy.intercept('POST', '/admin/api/resources/Turma/actions/new').as('createTurma')
+    cy.get('[data-testid="button-save"]').contains('Save').click()
+    
+    cy.wait('@createTurma').its('response.statusCode').should('eq', 200)
   })
 
   it('should be able to register a new Responsavel', () => {
-    cy.get('.icon-box').click()
-    cy.navigateToCreate('Responsavel')
-    cy.get('#email').click().type('email@teste.com')
-    cy.get('#nome').click().type('Responsavel de Teste')
-    cy.get('#contato').click().type('123456789')
-    cy.get('#senhaHash').click().type('senha123')
-    cy.saveForm()
+    cy.get('a[href="/admin/resources/Responsavel"]').click()
+    cy.get('a[href="/admin/resources/Responsavel/actions/new"]').contains('Create new').click()
+    cy.get('#email').type('email@teste.com')
+    cy.get('#nome').type('Responsavel de Teste')
+    cy.get('#contato').type('123456789')
+    cy.get('#senhaHash').type('senha123', { log: false })
+    
+    cy.intercept('POST', '/admin/api/resources/Responsavel/actions/new').as('createResponsavel')
+    cy.get('[data-testid="button-save"]').contains('Save').click()
+    
+    cy.wait('@createResponsavel').its('response.statusCode').should('eq', 200)
   })
 
   it('should be able to register a new Crianca', () => {
-    cy.get('.icon-box').click()
-    cy.navigateToCreate('Crianca')
-    cy.get('#nome').click().type('Crianca de Teste')
-    cy.get('#dataNascimento').click().type('01/01/2020')
-    cy.get('[data-testid="property-edit-turma"] .adminjs_Select').click().type('1')
-    cy.get('[data-testid="property-edit-responsavel"] .adminjs_Select').click().type('1')
-    cy.saveForm()
+    cy.get('a[href="/admin/resources/Crianca"]').click()
+    cy.get('a[href="/admin/resources/Crianca/actions/new"]').contains('Create new').click()
+    cy.get('#nome').type('Crianca de Teste')
+    cy.get('#dataNascimento').type('2023-08-08')
+    
+    cy.get('[data-testid="property-edit-turma"] .adminjs_Select')
+      .click().first().click({ force: true })
+    cy.get('[class$="option"]').first().click({ force: true })
+    
+    cy.get('[data-testid="property-edit-responsavel"] .adminjs_Select')
+      .click().first().click({ force: true })
+    cy.get('[class$="option"]').first().click({ force: true })
+    
+    cy.intercept('POST', '/admin/api/resources/Crianca/actions/new').as('createCrianca')
+    cy.get('[data-testid="button-save"]').contains('Save').click()
+    
+    cy.wait('@createCrianca').its('response.statusCode').should('eq', 200)
   })
 
-  it('should be able to register a new admin', () => {
-    cy.get('.icon-box').click()
-    cy.navigateToCreate('Admin')
-    cy.get('#usuario').click().type('User Test')
-    cy.get('#senhaHash').click().type('senha123')
-    cy.get('#nome').click().type('User Test')
-    cy.saveForm()
+  it('should be able to register a new Admin', () => {
+    cy.get('a[href="/admin/resources/Admin"]').click();
+    cy.get('a[href="/admin/resources/Admin/actions/new"]').contains('Create new').click()
+    cy.get('#usuario').type('userteste')
+    cy.get('#senhaHash').type('senha123', { log: false })
+    cy.get('#nome').type('User de Teste')
+    
+    cy.intercept('POST', '/admin/api/resources/Admin/actions/new').as('createAdmin')
+    cy.get('[data-testid="button-save"]').contains('Save').click()
+    
+    cy.wait('@createAdmin').its('response.statusCode').should('eq', 200)
   })
 })
