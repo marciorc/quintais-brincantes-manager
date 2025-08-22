@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const supertest = require('supertest');
 const app = require('../server.js');
-const { createTestAdmin, getAuthToken } = require('./helpers/testHelpers');
+const { createTestAdmin, getAuthToken } = require('./helpers/adminTestHelpers');
 
 describe('Admin Routes', () => {
   let authToken;

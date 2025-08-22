@@ -80,25 +80,45 @@ class TurmaService {
    * @returns {Promise<object>} Turma criada
    */
   async create(data) {
-    // Verifica se nome já existe
-    const existingTurma = await prisma.turma.findUnique({
-      where: { nome: data.nome }
-    });
-
-    if (existingTurma) {
-      throw new Error('Já existe uma turma com este nome');
-    }
-
-    return await prisma.turma.create({
-      data,
-      include: {
-        criancas: {
-          include: {
-            responsavel: { select: { id: true, nome: true, email: true, contato: true } }
-          }
+    try {
+      console.log('=== TURMA SERVICE CREATE ===');
+      console.log('Dados recebidos:', data);
+      
+      // Verifica se nome já existe
+      const existingTurma = await prisma.turma.findFirst({
+        where: {
+          nome: data.nome
         }
+      });
+
+      console.log('Turma existente encontrada:', existingTurma);
+
+      if (existingTurma) {
+        const error = new Error('Nome da turma já está em uso');
+        error.code = 'DUPLICATE_TURMA'; // 👈 adiciona código customizado
+        throw error;
       }
-    });
+
+      const turma = await prisma.turma.create({
+        data: {
+          nome: data.nome
+        }
+      });
+
+      console.log('Turma criada com sucesso:', turma);
+      return turma;
+    } catch (error) {
+      console.error('=== ERRO NO TURMA SERVICE ===');
+      console.error('Mensagem:', error.message);
+      console.error('Código:', error.code);
+      console.error('Stack:', error.stack);
+      
+      if (error.code === 'P2002') { // Código de erro de constraint única do Prisma
+        throw new Error('Nome da turma já está em uso');
+      }
+      
+      throw error;
+    }
   }
 
   /**
@@ -108,37 +128,42 @@ class TurmaService {
    * @returns {Promise<object>} Turma atualizada
    */
   async update(id, data) {
-    // Verifica se turma existe
-    const existingTurma = await prisma.turma.findUnique({
-      where: { id }
-    });
-
-    if (!existingTurma) {
-      throw new Error('Turma não encontrada');
-    }
-
-    // Se está atualizando nome, verifica se não está em uso
-    if (data.nome && data.nome !== existingTurma.nome) {
-      const nomeInUse = await prisma.turma.findUnique({
-        where: { nome: data.nome }
-      });
-
-      if (nomeInUse) {
-        throw new Error('Já existe uma turma com este nome');
-      }
-    }
-
-    return await prisma.turma.update({
-      where: { id },
-      data,
-      include: {
-        criancas: {
-          include: {
-            responsavel: { select: { id: true, nome: true, email: true, contato: true } }
+    try {
+      // Verifica se nome já existe (para outra turma)
+      if (data.nome) {
+        const existingTurma = await prisma.turma.findFirst({
+          where: {
+            nome: data.nome,
+            NOT: {
+              id: parseInt(id)
+            }
           }
+        });
+
+        if (existingTurma) {
+          throw new Error('Nome da turma já está em uso');
         }
       }
-    });
+
+      const turma = await prisma.turma.update({
+        where: { id: parseInt(id) },
+        data: data
+      });
+
+      return turma;
+    } catch (error) {
+      console.error('Erro ao atualizar turma:', error);
+      
+      if (error.code === 'P2025') {
+        throw new Error('Turma não encontrada');
+      }
+      
+      if (error.code === 'P2002') {
+        throw new Error('Nome da turma já está em uso');
+      }
+      
+      throw error;
+    }
   }
 
   /**

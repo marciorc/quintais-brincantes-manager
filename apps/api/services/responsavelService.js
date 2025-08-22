@@ -1,4 +1,5 @@
 const { prisma } = require('../config/database');
+const bcrypt = require('bcrypt');
 const { hashPassword, comparePassword, sanitizeObject, sanitizeArray } = require('../utils/helpers');
 
 class ResponsavelService {
@@ -65,31 +66,36 @@ class ResponsavelService {
    * @returns {Promise<object>} Responsável criado
    */
   async create(data) {
-    const { senha, ...responsavelData } = data;
+    try {
+      const { senha, ...responsavelData } = data;
+      
+      // Verifica se email já existe
+      const existingResponsavel = await prisma.responsavel.findFirst({
+        where: {
+          email: responsavelData.email
+        }
+      });
 
-    // Verifica se email já existe
-    const existingResponsavel = await prisma.responsavel.findUnique({
-      where: { email: responsavelData.email }
-    });
-
-    if (existingResponsavel) {
-      throw new Error('Email já está em uso');
-    }
-
-    // Hash da senha
-    const senhaHash = await hashPassword(senha);
-
-    const responsavel = await prisma.responsavel.create({
-      data: {
-        ...responsavelData,
-        senhaHash
-      },
-      include: {
-        criancas: true
+      if (existingResponsavel) {
+        throw new Error('Email já está em uso');
       }
-    });
 
-    return sanitizeObject(responsavel);
+      // Hash da senha
+      const saltRounds = 12;
+      const senhaHash = await bcrypt.hash(senha, saltRounds);
+
+      const responsavel = await prisma.responsavel.create({
+        data: {
+          ...responsavelData,
+          senhaHash
+        }
+      });
+
+      return responsavel;
+    } catch (error) {
+      console.error('Erro ao criar responsável:', error);
+      throw error;
+    }
   }
 
   /**
@@ -245,4 +251,3 @@ class ResponsavelService {
 }
 
 module.exports = new ResponsavelService();
-
