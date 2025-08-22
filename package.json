@@ -9,7 +9,14 @@
     "prisma:migrate": "prisma migrate dev --schema=prisma/schema.prisma",
     "prisma:generate": "prisma generate",
     "prisma:seed": "node prisma/seed-superuser.js",
-    "start": "node apps/api/server.js"
+    "start": "node apps/api/server.js",
+    "test": "cross-env NODE_ENV=test mocha apps/api/test/**/*.test.js --timeout 10000 --exit",
+    "test:watch": "cross-env NODE_ENV=test mocha apps/api/test/**/*.test.js --watch --timeout 10000",
+    "test:coverage": "cross-env NODE_ENV=test nyc mocha apps/api/test/**/*.test.js --timeout 10000 --exit",
+    "test:load:smoke": "cd apps/api/k6-tests && npm run test:smoke",
+    "test:load:load": "cd apps/api/k6-tests && npm run test:load",
+    "test:load:stress": "cd apps/api/k6-tests && npm run test:stress",
+    "test:load:all": "cd apps/api/k6-tests && ./run-tests.sh all"
   },
   "dependencies": {
     "@prisma/client": "^6.13.0",

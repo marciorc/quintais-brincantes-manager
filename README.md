@@ -29,6 +29,7 @@ quintais-brincantes-manager/
 ├── apps/
 │   ├── api/                      # Backend API (Node.js/Express.js)
 │   │   ├── controllers/          # Lógica de negócio para cada rota
+│   │   ├── k6-tests/             # Testes de performance com k6
 │   │   ├── routes/               # Definição das rotas da API (Admin, Criança, Responsável, Turma)
 │   │   ├── services/             # Serviços de negócio e interação com o Prisma
 │   │   └── utils/                # Utilitários e funções auxiliares (ex: validação)
