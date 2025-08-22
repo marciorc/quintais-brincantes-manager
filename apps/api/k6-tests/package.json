@@ -1,0 +1,13 @@
+{
+  "name": "k6-tests",
+  "version": "1.0.0",
+  "description": "Testes de carga com k6 para API Quintais Brincantes",
+  "scripts": {
+    "test:smoke": "k6 run scripts/smoke-test.js",
+    "test:load": "k6 run scripts/load-test.js",
+    "test:stress": "k6 run scripts/stress-test.js"
+  },
+  "devDependencies": {
+    "k6": "^0.0.0"
+  }
+}
