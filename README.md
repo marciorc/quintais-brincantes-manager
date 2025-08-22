@@ -163,3 +163,8 @@ Para executar o projeto utilizando Docker e Docker Compose, siga este comando:
 ```bash
 docker-compose up -d
 ```
+
+## Imagens
+
+![Swagger da API ](./Swagger.png)
+![Homepage Web](./HomePage.png)
