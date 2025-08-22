@@ -14,10 +14,18 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import './commands';
 
 Cypress.on('uncaught:exception', (err, runnable) => {
-  // returning false here prevents Cypress from
-  // failing the test
-  return false
-})
+  console.error('Uncaught exception:', err.message);
+  return false;
+});
+
+// Configurações globais
+beforeEach(() => {
+  // Interceptar requests para adicionar headers necessários
+  cy.intercept('**/admin/api/**', (req) => {
+    req.headers['X-Requested-With'] = 'XMLHttpRequest';
+    req.headers['Accept'] = 'application/json';
+  });
+});
