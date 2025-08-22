@@ -62,7 +62,7 @@ class AdminController {
     } catch (error) {
       console.error('Erro ao criar administrador:', error);
       
-      if (error.message === 'Email já está em uso') {
+      if (error.message === 'Usuário já está em uso') {
         return errorResponse(res, 409, 'Conflito', error.message);
       }
       
@@ -86,7 +86,7 @@ class AdminController {
         return errorResponse(res, 404, 'Não encontrado', error.message);
       }
       
-      if (error.message === 'Email já está em uso') {
+      if (error.message === 'Usuário já está em uso') {
         return errorResponse(res, 409, 'Conflito', error.message);
       }
       
@@ -123,16 +123,16 @@ class AdminController {
    */
   async authenticate(req, res) {
     try {
-      const { email, senha } = req.body;
+      const { usuario, senha } = req.body;
       
-      if (!email || !senha) {
-        return errorResponse(res, 400, 'Dados inválidos', 'Email e senha são obrigatórios');
+      if (!usuario || !senha) {
+        return errorResponse(res, 400, 'Dados inválidos', 'Usuário e senha são obrigatórios');
       }
 
-      const admin = await adminService.authenticate(email, senha);
+      const admin = await adminService.authenticate(usuario, senha);
 
       if (!admin) {
-        return errorResponse(res, 401, 'Não autorizado', 'Email ou senha incorretos');
+        return errorResponse(res, 401, 'Não autorizado', 'Usuário ou senha incorretos');
       }
 
       return successResponse(res, 200, 'Autenticação realizada com sucesso', admin);

@@ -36,11 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // Swagger documentation
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
-  explorer: true,
-  customCss: '.swagger-ui .topbar { display: none }',
-  customSiteTitle: 'API Quintais Brincantes - Documentation'
-}));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Rota de health check
 app.get('/health', (req, res) => {
