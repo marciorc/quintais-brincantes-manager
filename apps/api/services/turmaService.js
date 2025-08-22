@@ -348,28 +348,66 @@ class TurmaService {
    * @returns {Promise<object>} Estatísticas
    */
   async getStatistics() {
-    const [
-      totalTurmas,
-      turmasComCriancas,
-      turmasVazias,
-      mediaCriancasPorTurma
-    ] = await Promise.all([
-      prisma.turma.count(),
-      prisma.turma.count({ where: { criancas: { some: {} } } }),
-      prisma.turma.count({ where: { criancas: { none: {} } } }),
-      prisma.turma.aggregate({
-        _avg: {
-          criancas: true
-        }
-      })
-    ]);
+    try {
+      const [
+        totalTurmas,
+        turmasComCriancas,
+        turmasVazias,
+        mediaCriancasPorTurma
+      ] = await Promise.all([
+        prisma.turma.count(),
+        prisma.turma.count({
+          where: { 
+            criancas: { some: {} } 
+          }
+        }),
+        prisma.turma.count({
+          where: { 
+            criancas: { none: {} } 
+          }
+        }),
+        // Correção: usar approach diferente para média
+        this.calculateAverageCriancasPerTurma()
+      ]);
 
-    return {
-      totalTurmas,
-      turmasComCriancas,
-      turmasVazias,
-      mediaCriancasPorTurma: Math.round(mediaCriancasPorTurma._avg.criancas || 0)
-    };
+      return {
+        totalTurmas,
+        turmasComCriancas,
+        turmasVazias,
+        taxaOcupacao: totalTurmas > 0 ? Math.round((turmasComCriancas / totalTurmas) * 100) : 0,
+        mediaCriancasPorTurma: Math.round(mediaCriancasPorTurma * 100) / 100
+      };
+    } catch (error) {
+      console.error('Erro ao buscar estatísticas de turmas:', error);
+      throw error;
+    }
+  }
+
+  async calculateAverageCriancasPerTurma() {
+    try {
+      // Primeiro, busca todas as turmas com contagem de crianças
+      const turmasComContagem = await prisma.turma.findMany({
+        include: {
+          _count: {
+            select: { criancas: true }
+          }
+        }
+      });
+
+      if (turmasComContagem.length === 0) {
+        return 0;
+      }
+
+      // Calcula a média manualmente
+      const totalCriancas = turmasComContagem.reduce((sum, turma) => {
+        return sum + turma._count.criancas;
+      }, 0);
+
+      return totalCriancas / turmasComContagem.length;
+    } catch (error) {
+      console.error('Erro ao calcular média de crianças por turma:', error);
+      return 0;
+    }
   }
 }
 
