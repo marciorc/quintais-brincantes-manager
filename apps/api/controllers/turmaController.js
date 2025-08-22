@@ -62,8 +62,12 @@ class TurmaController {
     } catch (error) {
       console.error('Erro ao criar turma:', error);
       
-      if (error.message === 'Já existe uma turma com este nome') {
-        return errorResponse(res, 409, 'Conflito', error.message);
+      if (error.code === 'DUPLICATE_TURMA') {
+        return res.status(409).json({
+          success: false,
+          error: 'Conflict',
+          message: error.message
+        });
       }
       
       return errorResponse(res, 500, 'Erro interno', 'Erro ao criar turma');
