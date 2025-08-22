@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "public"."Responsavel" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "nome" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "contato" TEXT NOT NULL,
@@ -12,18 +12,19 @@ CREATE TABLE "public"."Responsavel" (
 
 -- CreateTable
 CREATE TABLE "public"."Crianca" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "nome" TEXT NOT NULL,
-    "dataNascimento" TIMESTAMP(3) NOT NULL,
-    "turmaId" TEXT,
-    "responsavelId" TEXT NOT NULL,
+    "dataNascimento" VARCHAR(10) NOT NULL,
+    "turmaId" INTEGER,
+    "responsavelId" INTEGER NOT NULL,
+    "criadoEm" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Crianca_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "public"."Turma" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "nome" TEXT NOT NULL,
 
     CONSTRAINT "Turma_pkey" PRIMARY KEY ("id")
@@ -31,7 +32,7 @@ CREATE TABLE "public"."Turma" (
 
 -- CreateTable
 CREATE TABLE "public"."Admin" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "usuario" TEXT NOT NULL,
     "senhaHash" TEXT NOT NULL,
     "nome" TEXT NOT NULL,
