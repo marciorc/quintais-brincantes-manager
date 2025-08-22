@@ -236,10 +236,9 @@ const options = {
               type: 'string',
               description: 'Nome completo do administrador'
             },
-            email: {
+            usuario: {
               type: 'string',
-              format: 'email',
-              description: 'Email único do administrador'
+              description: 'Usuário único do administrador'
             },
             criadoEm: {
               type: 'string',
@@ -250,7 +249,7 @@ const options = {
         },
         AdminInput: {
           type: 'object',
-          required: ['nome', 'email', 'senha'],
+          required: ['nome', 'usuario', 'senha'],
           properties: {
             nome: {
               type: 'string',
@@ -258,10 +257,9 @@ const options = {
               maxLength: 100,
               description: 'Nome completo do administrador'
             },
-            email: {
+            usuario: {
               type: 'string',
-              format: 'email',
-              description: 'Email único do administrador'
+              description: 'Usuario único do administrador'
             },
             senha: {
               type: 'string',

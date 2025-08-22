@@ -325,10 +325,6 @@ npm test
 npm run test:coverage
 ```
 
-## 📄 Licença
-
-Este projeto está sob a licença MIT.
-
 ## 🤝 Contribuição
 
 1. Fork o projeto
@@ -336,8 +332,3 @@ Este projeto está sob a licença MIT.
 3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
 4. Push para a branch (`git push origin feature/AmazingFeature`)
 5. Abra um Pull Request
-
-## 📞 Suporte
-
-Para suporte, entre em contato através do email: contato@quintaisbrincantes.com
-

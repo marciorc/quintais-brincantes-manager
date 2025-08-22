@@ -19,28 +19,25 @@ const PORT = process.env.PORT || 3001;
 // Conectar ao banco de dados
 connectDatabase();
 
-// Middlewares de segurança e logging
+// MIDDLEWARES NA ORDEM CORRETA:
+
+// 1. Middleware de parsing JSON (PRIMEIRO!)
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
+
+// 2. Middlewares de segurança e logging
 app.use(helmet());
 app.use(morgan('combined'));
 
-// CORS - permitir todas as origens
+// 3. CORS - permitir todas as origens
 app.use(cors({
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Middleware para parsing JSON
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true }));
-
-
-// Swagger documentation
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
-  explorer: true,
-  customCss: '.swagger-ui .topbar { display: none }',
-  customSiteTitle: 'API Quintais Brincantes - Documentation'
-}));
+// 4. Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Rota de health check
 app.get('/health', (req, res) => {

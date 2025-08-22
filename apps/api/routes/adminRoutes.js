@@ -34,12 +34,12 @@ const { validate, validateId, adminSchemas } = require('../utils/validation');
  *         name: search
  *         schema:
  *           type: string
- *         description: Termo de busca (nome ou email)
+ *         description: Termo de busca (nome ou usuario)
  *       - in: query
  *         name: simple
  *         schema:
  *           type: boolean
- *         description: Retorna formato simplificado (apenas id, nome e email)
+ *         description: Retorna formato simplificado (apenas id, nome e usuario)
  *     responses:
  *       200:
  *         description: Lista de administradores obtida com sucesso
@@ -191,7 +191,7 @@ router.get('/:id', validateId, adminController.show);
  *       400:
  *         description: Dados inválidos
  *       409:
- *         description: Email já está em uso
+ *         description: usuario já está em uso
  *       500:
  *         description: Erro interno do servidor
  */
@@ -210,13 +210,12 @@ router.post('/', validate(adminSchemas.create), adminController.store);
  *           schema:
  *             type: object
  *             required:
- *               - email
+ *               - usuario
  *               - senha
  *             properties:
- *               email:
+ *               usuario:
  *                 type: string
- *                 format: email
- *                 description: Email do administrador
+ *                 description: Usuario do administrador
  *               senha:
  *                 type: string
  *                 description: Senha do administrador
@@ -235,7 +234,7 @@ router.post('/', validate(adminSchemas.create), adminController.store);
  *       400:
  *         description: Dados inválidos
  *       401:
- *         description: Email ou senha incorretos
+ *         description: Usuario ou senha incorretos
  *       500:
  *         description: Erro interno do servidor
  */
@@ -311,9 +310,8 @@ router.post('/:id/change-password', validateId, adminController.changePassword);
  *                 type: string
  *                 minLength: 2
  *                 maxLength: 100
- *               email:
+ *               usuario:
  *                 type: string
- *                 format: email
  *               senha:
  *                 type: string
  *                 minLength: 6
@@ -334,7 +332,7 @@ router.post('/:id/change-password', validateId, adminController.changePassword);
  *       404:
  *         description: Administrador não encontrado
  *       409:
- *         description: Email já está em uso
+ *         description: Usuario já está em uso
  *       500:
  *         description: Erro interno do servidor
  */

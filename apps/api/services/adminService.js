@@ -37,13 +37,13 @@ class AdminService {
   }
 
   /**
-   * Busca administrador por email
-   * @param {string} email - Email do administrador
+   * Busca administrador por usuario
+   * @param {string} usuario - usuario do administrador
    * @returns {Promise<object|null>} Administrador encontrado ou null
    */
-  async findByEmail(email) {
+  async findByUser(usuario) {
     const admin = await prisma.admin.findUnique({
-      where: { email }
+      where: { usuario }
     });
 
     return admin ? sanitizeObject(admin) : null;
@@ -57,13 +57,13 @@ class AdminService {
   async create(data) {
     const { senha, ...adminData } = data;
 
-    // Verifica se email já existe
+    // Verifica se usuario já existe
     const existingAdmin = await prisma.admin.findUnique({
-      where: { email: adminData.email }
+      where: { usuario: adminData.usuario }
     });
 
     if (existingAdmin) {
-      throw new Error('Email já está em uso');
+      throw new Error('Usuário já está em uso');
     }
 
     // Hash da senha
@@ -97,14 +97,14 @@ class AdminService {
 
     const updateData = { ...data };
 
-    // Se está atualizando email, verifica se não está em uso
-    if (data.email && data.email !== existingAdmin.email) {
-      const emailInUse = await prisma.admin.findUnique({
-        where: { email: data.email }
+    // Se está atualizando usuario, verifica se não está em uso
+    if (data.usuario && data.usuario !== existingAdmin.usuario) {
+      const userInUse = await prisma.admin.findUnique({
+        where: { usuario: data.usuario }
       });
 
-      if (emailInUse) {
-        throw new Error('Email já está em uso');
+      if (userInUse) {
+        throw new Error('Usuário já está em uso');
       }
     }
 
@@ -153,13 +153,13 @@ class AdminService {
 
   /**
    * Autentica administrador
-   * @param {string} email - Email do administrador
+   * @param {string} usuario - Usuário do administrador
    * @param {string} senha - Senha do administrador
    * @returns {Promise<object|null>} Administrador autenticado ou null
    */
-  async authenticate(email, senha) {
+  async authenticate(usuario, senha) {
     const admin = await prisma.admin.findUnique({
-      where: { email }
+      where: { usuario }
     });
 
     if (!admin) {
@@ -200,7 +200,7 @@ class AdminService {
     const where = search ? {
       OR: [
         { nome: { contains: search, mode: 'insensitive' } },
-        { email: { contains: search, mode: 'insensitive' } }
+        { usuario: { contains: search, mode: 'insensitive' } }
       ]
     } : {};
 
@@ -290,7 +290,7 @@ class AdminService {
   }
 
   /**
-   * Busca administradores simples (apenas id, nome e email)
+   * Busca administradores simples (apenas id, nome e usuario)
    * @returns {Promise<Array>} Lista simplificada de administradores
    */
   async findSimple() {
@@ -298,7 +298,7 @@ class AdminService {
       select: {
         id: true,
         nome: true,
-        email: true,
+        usuario: true,
         criadoEm: true
       },
       orderBy: { nome: 'asc' }
