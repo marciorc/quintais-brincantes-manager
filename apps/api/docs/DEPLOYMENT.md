@@ -530,4 +530,3 @@ npx prisma migrate reset
 # Restart
 pm2 restart quintais-api
 ```
-

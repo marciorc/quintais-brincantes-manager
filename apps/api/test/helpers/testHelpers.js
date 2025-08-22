@@ -17,7 +17,7 @@ const getAuthToken = async () => {
     .set('Content-Type', 'application/json')
     .set('Accept', 'application/json')
     .send({
-      usuario: admin.usuario, // Use 'usuario' em vez de 'email'
+      usuario: admin.usuario,
       senha: 'senha123'
     });
 
