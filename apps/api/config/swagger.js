@@ -1,20 +1,13 @@
-const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerJsdoc = require('swagger-jsdoc')
+const path = require('path')
 
 const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'API Quintais Brincantes',
+      title: 'API Quintais Brincantes Manager',
       version: '1.0.0',
-      description: 'API REST para gestão de Quintais Brincantes - Sistema de gerenciamento de crianças, responsáveis, turmas e administradores',
-      contact: {
-        name: 'Quintais Brincantes',
-        email: 'contato@quintaisbrincantes.com'
-      },
-      license: {
-        name: 'MIT',
-        url: 'https://opensource.org/licenses/MIT'
-      }
+      description: 'API REST para gestão de Quintais Brincantes - Sistema de gerenciamento de crianças, responsáveis, turmas e administradores'
     },
     servers: [
       {
@@ -285,7 +278,10 @@ const options = {
       }
     ]
   },
-  apis: ['./routes/*.js', './controllers/*.js'], // Caminhos para os arquivos com anotações JSDoc
+  apis: [
+    path.join(__dirname, '../routes/*.js'),
+    path.join(__dirname, '../controllers/*.js')
+  ]
 };
 
 const specs = swaggerJsdoc(options);
