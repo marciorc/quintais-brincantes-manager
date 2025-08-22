@@ -13,15 +13,37 @@ describe('Admin Routes', () => {
     testAdmin = await createTestAdmin();
     testAdminId = testAdmin.id;
 
+    console.log('Admin criado:', testAdmin);
+
     // Obter token de autenticação
     const authResponse = await supertest(app)
       .post('/api/admins/authenticate')
+      .set('Content-Type', 'application/json')
+      .set('Accept', 'application/json')
       .send({
-        email: testAdmin.email,
+        email: testAdmin.usuario,
         senha: 'senha123'
       });
 
-    authToken = authResponse.body.data.token || authResponse.headers['authorization'];
+    // Verifique se a autenticação foi bem-sucedida
+    if (authResponse.status !== 200) {
+      console.error('Falha na autenticação:', authResponse.body);
+      throw new Error('Falha na autenticação do teste');
+    }
+
+    // Extraia o token baseado na estrutura real da resposta
+    if (authResponse.body.data && authResponse.body.data.token) {
+      authToken = authResponse.body.data.token;
+    } else if (authResponse.body.token) {
+      authToken = authResponse.body.token;
+    } else if (authResponse.headers['authorization']) {
+      authToken = authResponse.headers['authorization'].replace('Bearer ', '');
+    } else {
+      console.log('Resposta completa:', authResponse.body);
+      throw new Error('Estrutura de token não reconhecida');
+    }
+
+    console.log('Token obtido com sucesso');
   });
 
   after(async () => {

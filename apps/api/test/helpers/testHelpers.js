@@ -11,17 +11,29 @@ const createTestAdmin = async (adminData = {}) => {
 };
 
 const getAuthToken = async () => {
-  // Cria um admin e obtém token de autenticação
   const admin = await createTestAdmin();
   const response = await supertest(app)
     .post('/api/admins/authenticate')
+    .set('Content-Type', 'application/json')
+    .set('Accept', 'application/json')
     .send({
-      usuario: admin.usuario,
+      usuario: admin.usuario, // Use 'usuario' em vez de 'email'
       senha: 'senha123'
     });
-  
-  return response.body.data.token || response.headers['authorization'];
+
+  // Verifique a estrutura real da resposta
+  if (response.body.data && response.body.data.token) {
+    return response.body.data.token;
+  } else if (response.headers['authorization']) {
+    return response.headers['authorization'].replace('Bearer ', '');
+  } else if (response.body.token) {
+    return response.body.token;
+  } else {
+    console.log('Estrutura da resposta:', response.body);
+    throw new Error('Token não encontrado na resposta');
+  }
 };
+
 
 module.exports = {
   createTestAdmin,
